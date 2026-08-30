@@ -37,10 +37,10 @@ impl Dispatcher {
             if handler.event != event_name {
                 continue;
             }
-            if let Some(when) = &handler.when {
-                if !matches_when(when, &event) {
-                    continue;
-                }
+            if let Some(when) = &handler.when
+                && !matches_when(when, &event)
+            {
+                continue;
             }
 
             let debounce_ms = handler.effective_debounce_ms(&self.config.handler_defaults);

@@ -45,12 +45,12 @@ pub fn canonicalize_open_path(path: &Path) -> Result<PathBuf> {
         return Ok(canonical);
     }
 
-    if let Some(parent) = base_path.parent() {
-        if !parent.as_os_str().is_empty() {
-            std::fs::create_dir_all(parent).with_context(|| {
-                format!("failed to create parent directory {}", parent.display())
-            })?;
-        }
+    if let Some(parent) = base_path.parent()
+        && !parent.as_os_str().is_empty()
+    {
+        std::fs::create_dir_all(parent).with_context(|| {
+            format!("failed to create parent directory {}", parent.display())
+        })?;
     }
     Ok(path.to_path_buf())
 }

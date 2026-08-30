@@ -6,7 +6,7 @@ use std::time::Duration;
 use anyhow::{Context, Result};
 
 use crate::cli::Cli;
-use crate::protocol::helix_cli::{FLAG_REMOTE, FLAG_SUBSCRIBE};
+use crate::protocol::helix_cli::FLAG_REMOTE;
 
 pub const SOCKET_RETRY_ATTEMPTS: u32 = 75;
 pub const SOCKET_RETRY_DELAY_MS: u64 = 200;
@@ -38,7 +38,7 @@ fn try_remote(cli: &Cli, _socket: &Path, cmd: &str) -> Result<()> {
         .arg(FLAG_REMOTE)
         .arg(cmd)
         .status()
-        .with_context(|| format!("failed to spawn {}", cli.helix_bin()))?;
+        .with_context(|| format!("failed to spawn {} --remote", cli.helix_bin()))?;
     if status.success() {
         Ok(())
     } else {
@@ -48,14 +48,4 @@ fn try_remote(cli: &Cli, _socket: &Path, cmd: &str) -> Result<()> {
             status.code().unwrap_or(-1)
         )
     }
-}
-
-pub fn spawn_subscribe(cli: &Cli, events: &str) -> Result<std::process::Child> {
-    Command::new(cli.helix_bin())
-        .arg(FLAG_SUBSCRIBE)
-        .arg(events)
-        .stdout(std::process::Stdio::piped())
-        .stderr(std::process::Stdio::inherit())
-        .spawn()
-        .with_context(|| format!("failed to spawn {} --subscribe", cli.helix_bin()))
 }
