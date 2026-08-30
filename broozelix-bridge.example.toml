@@ -1,0 +1,21 @@
+[subscribe]
+events = ["document-focus", "cwd-changed"]
+
+[handler_defaults]
+debounce_ms = 0
+spawn = "async"
+
+[[handlers]]
+event = "document-focus"
+command = 'broot --send "$BROOT_LISTEN" -c ":show {path}"'
+debounce_ms = 100
+
+[[handlers]]
+event = "cwd-changed"
+command = 'broot --send "$BROOT_LISTEN" -c ":focus {path}"'
+
+# Placeholders substituted from Helix v1 events:
+#   {path}   - file path (document-* and cwd-changed)
+#   {line}   - 1-based line (document-focus)
+#   {column} - 1-based column (document-focus)
+#   {mode}   - editor mode (mode-changed)
