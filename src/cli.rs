@@ -17,6 +17,10 @@ pub struct Cli {
     #[arg(long, global = true)]
     pub helix_socket: Option<PathBuf>,
 
+    /// Log handler activity to stderr (default: warnings only, or silent when redirected).
+    #[arg(long, short, global = true)]
+    pub verbose: bool,
+
     #[command(subcommand)]
     pub command: Command,
 }
